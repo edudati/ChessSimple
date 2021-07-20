@@ -37,6 +37,19 @@
             p.position = pos;   
         }
 
+        // remove piece and put null on the position of the piece and null in the array pieces for this position
+        public Piece removePiece(Position pos)
+        {
+            if(piece(pos) == null)
+            {
+                return null;
+            }
+            Piece aux = piece(pos);
+            aux.position = null;
+            pieces[pos.row, pos.col] = null;
+            return aux;
+        }
+
         // This method validate if the position is valid and check is exist a piece in this position
         public bool existPiece(Position pos)
         {

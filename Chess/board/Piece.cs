@@ -14,5 +14,15 @@
             this.color = color;
             movAmount = 0;
         }
+
+        public void addMovAmount()
+        {
+            movAmount++;
+        }
+
+        public void subtractMovAmount()
+        {
+            movAmount--;
+        }
     }
 }

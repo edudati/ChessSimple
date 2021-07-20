@@ -1,5 +1,6 @@
 ﻿using System;
 using board;
+using chessMatch;
 
 namespace Chess
 {
@@ -28,6 +29,14 @@ namespace Chess
             }
             printInBlue("   a b c d e f g h");
             Console.WriteLine();
+        }
+
+        public static PositionOfChess readPositionChess()
+        {
+            string aux = Console.ReadLine();
+            char col = aux[0];
+            int row = int.Parse("" + aux[1]);
+            return new PositionOfChess(col, row);
         }
 
         private static void printInBlue(string text)
