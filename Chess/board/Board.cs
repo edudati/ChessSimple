@@ -18,5 +18,12 @@
         {
             return pieces[row, col];
         }
+
+        // put one piece on the board (array of pieces) and put position to the piece p
+        public void putPiece(Piece p, Position pos)
+        {
+            pieces[pos.row, pos.col] = p;
+            p.position = pos;   
+        }
     }
 }

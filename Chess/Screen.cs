@@ -9,10 +9,8 @@ namespace Chess
         {
             printInBlue("   a b c d e f g h");
             Console.WriteLine();
-            
             for (int i = 0; i < b.rows; i++)
-            {
-                
+            {   
                 printInBlue((8 - i) + "  ");
                 for (int j = 0; j < b.cols; j++)
                 {
