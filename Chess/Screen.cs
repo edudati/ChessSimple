@@ -20,7 +20,7 @@ namespace Chess
                     }
                     else
                     {
-                        Console.Write(b.piece(i, j) + " ");
+                        printPiece(b.piece(i, j));
                     } 
                 }
                 printInBlue((8 - i) + "  ");
@@ -36,6 +36,22 @@ namespace Chess
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.Write(text);
             Console.ForegroundColor = aux;
+        }
+
+        // print piece on the screen with your respective color
+        private static void printPiece(Piece piece)
+        {
+            if (piece.color == Color.White)
+            {
+                Console.Write(piece + " ");
+            }
+            else
+            {
+                ConsoleColor aux = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.Write(piece + " ");
+                Console.ForegroundColor = aux;
+            }
         }
     }
 }
