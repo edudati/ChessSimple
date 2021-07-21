@@ -17,10 +17,14 @@ namespace Chess
                     Console.Clear();
                     Screen.printBoard(match.b);
 
-                    Console.WriteLine("Origin: ");
+                    Console.Write("Origin: ");
                     Position origin = Screen.readPositionChess().ToPosition();
 
-                    Console.WriteLine("Destination: ");
+                    bool[,] possiblePositionsBoard = match.b.piece(origin).possiblesMovs();
+                    Console.Clear();
+                    Screen.printBoard(match.b, possiblePositionsBoard);
+
+                    Console.Write("Destination: ");
                     Position destination = Screen.readPositionChess().ToPosition();
 
                     match.performMov(origin, destination);

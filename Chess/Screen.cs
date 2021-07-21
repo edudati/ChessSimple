@@ -15,14 +15,7 @@ namespace Chess
                 printInBlue((8 - i) + "  ");
                 for (int j = 0; j < b.cols; j++)
                 {
-                    if (b.piece(i, j) == null)
-                    {
-                        Console.Write("- ");
-                    }
-                    else
-                    {
-                        printPiece(b.piece(i, j));
-                    } 
+                    printPiece(b.piece(i, j));
                 }
                 printInBlue((8 - i) + "  ");
                 Console.WriteLine();
@@ -30,6 +23,40 @@ namespace Chess
             printInBlue("   a b c d e f g h");
             Console.WriteLine();
         }
+
+
+        public static void printBoard(Board b, bool[,] possiblePositionsBoard)
+        {
+            ConsoleColor originalBackground = Console.BackgroundColor;
+            ConsoleColor newBackground = ConsoleColor.DarkGray;
+            
+            printInBlue("   a b c d e f g h");
+            Console.WriteLine();
+            for (int i = 0; i < b.rows; i++)
+            {
+                printInBlue((8 - i) + "  ");
+                for (int j = 0; j < b.cols; j++)
+                {
+                    // highlight possible movements on the screen
+                    if (possiblePositionsBoard[i, j])
+                    {
+                        Console.BackgroundColor = newBackground;
+                    }
+                    else
+                    {
+                        Console.BackgroundColor = originalBackground;
+                    }
+                    printPiece(b.piece(i, j));
+                    Console.BackgroundColor = originalBackground;
+                }
+                printInBlue((8 - i) + "  ");
+                Console.WriteLine();
+            }
+            printInBlue("   a b c d e f g h");
+            Console.WriteLine();
+            Console.BackgroundColor = originalBackground;
+        }
+
 
         public static PositionOfChess readPositionChess()
         {
@@ -50,16 +77,24 @@ namespace Chess
         // print piece on the screen with your respective color
         private static void printPiece(Piece piece)
         {
-            if (piece.color == Color.White)
+
+            if (piece == null)
             {
-                Console.Write(piece + " ");
+                Console.Write("- ");
             }
             else
             {
-                ConsoleColor aux = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.Write(piece + " ");
-                Console.ForegroundColor = aux;
+                if (piece.color == Color.White)
+                {
+                    Console.Write(piece + " ");
+                }
+                else
+                {
+                    ConsoleColor aux = Console.ForegroundColor;
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    Console.Write(piece + " ");
+                    Console.ForegroundColor = aux;
+                }
             }
         }
     }
