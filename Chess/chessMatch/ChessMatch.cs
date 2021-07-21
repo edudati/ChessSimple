@@ -34,6 +34,30 @@ namespace chessMatch
             changePlayer(currentPlayer);
         }
 
+        public void validateOriginPosition(Position origin)
+        {
+            if (b.piece(origin) == null)
+            {
+                throw new BoardException("This place is empty!");
+            }
+            if (currentPlayer != b.piece(origin).color)
+            {
+                throw new BoardException("This is not your piece!");
+            }
+            if (!b.piece(origin).existPossibleMov())
+            {
+                throw new BoardException("There is no possible movements for the chossen piece!");
+            }
+        }
+
+        public void validateDestinationPosition(Position origin, Position destination)
+        {
+            if (!b.piece(origin).canMoveTo(destination))
+            {
+                throw new BoardException("Invalid place of destination!");
+            }
+        }
+
         public void changePlayer(Color currentPlayer)
         {
             if (currentPlayer == Color.White)
@@ -45,6 +69,7 @@ namespace chessMatch
                 this.currentPlayer = Color.White;
             }
         }
+
 
 
         private void putPiecesOnTheBoard()
