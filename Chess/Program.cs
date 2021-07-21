@@ -16,6 +16,8 @@ namespace Chess
                 {
                     Console.Clear();
                     Screen.printBoard(match.b);
+                    Console.WriteLine("Shift: " + match.shift);
+                    Console.WriteLine("Waintg " + match.currentPlayer);
 
                     Console.Write("Origin: ");
                     Position origin = Screen.readPositionChess().ToPosition();
@@ -27,7 +29,7 @@ namespace Chess
                     Console.Write("Destination: ");
                     Position destination = Screen.readPositionChess().ToPosition();
 
-                    match.performMov(origin, destination);
+                    match.executeAllMove(origin, destination);
                 }
                 
                 

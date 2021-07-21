@@ -6,8 +6,8 @@ namespace chessMatch
     class ChessMatch
     {
         public Board b { get; private set; }
-        private int shift;
-        private Color currentPlayer;
+        public int shift { get; private set; }
+        public Color currentPlayer { get; private set; }
         public bool finished { get; private set; }
 
         public ChessMatch()
@@ -26,6 +26,26 @@ namespace chessMatch
             Piece capturedPiece = b.removePiece(destination);
             b.putPiece(p, destination);
         }
+
+        public void executeAllMove(Position origin, Position destination)
+        {
+            performMov(origin, destination);
+            shift++;
+            changePlayer(currentPlayer);
+        }
+
+        public void changePlayer(Color currentPlayer)
+        {
+            if (currentPlayer == Color.White)
+            {
+                this.currentPlayer = Color.Black;
+            }
+            else
+            {
+                this.currentPlayer = Color.White;
+            }
+        }
+
 
         private void putPiecesOnTheBoard()
         {
