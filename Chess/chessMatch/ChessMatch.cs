@@ -11,6 +11,7 @@ namespace chessMatch
         public bool finished { get; private set; }
         private HashSet<Piece> pieces;
         private HashSet<Piece> captured;
+        public bool check { get; private set; }
 
         public ChessMatch()
         {
@@ -19,11 +20,12 @@ namespace chessMatch
             currentPlayer = Color.White;
             pieces = new HashSet<Piece>();
             captured = new HashSet<Piece>();
+            check = false;
             finished = false;
             putPiecesOnTheBoard();
         }
 
-        public void performMov(Position origin, Position destination)
+        public Piece performMov(Position origin, Position destination)
         {
             Piece p = b.removePiece(origin);
             p.addMovAmount();
@@ -33,14 +35,43 @@ namespace chessMatch
             {
                 captured.Add(capturedPiece);
             }
+            return capturedPiece;
+        }
+        public void undoMovement(Position origin, Position destination, Piece capturedPiece)
+        {
+            Piece p = b.removePiece(destination);
+            p.subtractMovAmount();
+            if(capturedPiece != null)
+            {
+                b.putPiece(capturedPiece, destination);
+                captured.Remove(capturedPiece);
+            }
+            b.putPiece(p, origin);
         }
 
         public void executeAllMove(Position origin, Position destination)
         {
-            performMov(origin, destination);
+            Piece capturedPiece = performMov(origin, destination);
+            if (isInCheck(currentPlayer))
+            {
+                undoMovement(origin, destination, capturedPiece);
+                throw new BoardException("You do not put yourself in Check!");
+            }
+
+            if (isInCheck(opponent(currentPlayer)))
+            {
+                check = true;
+            }
+            else
+            {
+                check = false;
+            }
+
             shift++;
             changePlayer(currentPlayer);
         }
+
+       
 
         public void validateOriginPosition(Position origin)
         {
@@ -103,6 +134,43 @@ namespace chessMatch
             }
             aux.ExceptWith(capturedPieces(color));
             return aux;
+        }
+
+        private Color opponent(Color color)
+        {
+            if (color == Color.White)
+            {
+                return Color.Black;
+            }
+            return Color.White;
+        }
+
+       // return the position of the King
+        private Piece king(Color color)
+        {
+            foreach (Piece p in piecesInPlay(color))
+            {
+                if (p is King)
+                {
+                    return p;
+                }
+            }
+            return null;
+        }
+
+        // verify if the King is in check. Set the position of the king and run through whole possibles moviments for all pieces in play. If true, the king is in check.
+        public bool isInCheck(Color color)
+        {
+            foreach(Piece p in piecesInPlay(opponent(color)))
+            {
+                Piece k = king(color);
+                bool[,] mat = p.possiblesMovs();
+                if (mat[k.position.row, k.position.col])
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
 

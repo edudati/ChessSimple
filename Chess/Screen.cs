@@ -7,6 +7,25 @@ namespace Chess
 {
     class Screen
     {
+        
+        public static void printMatch(ChessMatch match)
+        {
+            printBoard(match.b);
+            Console.WriteLine();
+            Screen.printCapturedPieces(match);
+            Console.WriteLine();
+            Console.WriteLine("Turn: " + match.shift);
+            Console.WriteLine("Waintg " + match.currentPlayer);
+            if (match.check)
+            {
+                Console.WriteLine("=====================");
+                Console.WriteLine("       CHECK!");
+                Console.WriteLine("=====================");
+            }
+        }
+        
+        
+        
         public static void printBoard(Board b)
         {
             printInBlue("   a b c d e f g h");
