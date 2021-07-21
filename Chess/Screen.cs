@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using board;
 using chessMatch;
 
@@ -55,6 +56,28 @@ namespace Chess
             printInBlue("   a b c d e f g h");
             Console.WriteLine();
             Console.BackgroundColor = originalBackground;
+        }
+
+        public static void printCapturedPieces(ChessMatch match)
+        {
+            Console.WriteLine("Captured pieces: ");
+            Console.Write("White: ");
+            printSet(match.capturedPieces(Color.White));
+            Console.WriteLine();
+            Console.Write("Black: ");
+            printSet(match.capturedPieces(Color.Black));
+            Console.WriteLine();
+
+        }
+
+        public static void printSet(HashSet<Piece> set) 
+        {
+            Console.Write("[ ");
+            foreach(Piece p in set)
+            {
+                Console.Write(p + " ");
+            }
+            Console.Write("]");
         }
 
 

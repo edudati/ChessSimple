@@ -18,7 +18,10 @@ namespace Chess
                     {
                         Console.Clear();
                         Screen.printBoard(match.b);
-                        Console.WriteLine("Shift: " + match.shift);
+                        Console.WriteLine();
+                        Screen.printCapturedPieces(match);
+                        Console.WriteLine();
+                        Console.WriteLine("Turn: " + match.shift);
                         Console.WriteLine("Waintg " + match.currentPlayer);
 
                         Console.Write("Origin: ");
