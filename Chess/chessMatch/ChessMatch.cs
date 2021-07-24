@@ -221,19 +221,43 @@ namespace chessMatch
         }
         private void putPiecesOnTheBoard()
         {
-            putNewPiece(new Rock(b, Color.Black), 'c', 8);
-            putNewPiece(new Rock(b, Color.Black), 'c', 7);
-            putNewPiece(new King(b, Color.Black), 'd', 8);
-            putNewPiece(new Rock(b, Color.Black), 'd', 7);
-            putNewPiece(new Rock(b, Color.Black), 'e', 8);
-            putNewPiece(new Rock(b, Color.Black), 'e', 7);
+            putNewPiece(new Pawn(b, Color.Black), 'a', 7);
+            putNewPiece(new Pawn(b, Color.Black), 'b', 7);
+            putNewPiece(new Pawn(b, Color.Black), 'c', 7);
+            putNewPiece(new Pawn(b, Color.Black), 'd', 7);
+            putNewPiece(new Pawn(b, Color.Black), 'e', 7);
+            putNewPiece(new Pawn(b, Color.Black), 'f', 7);
+            putNewPiece(new Pawn(b, Color.Black), 'g', 7);
+            putNewPiece(new Pawn(b, Color.Black), 'h', 7);
 
-            putNewPiece(new Rock(b, Color.White), 'c', 1);
-            putNewPiece(new Rock(b, Color.White), 'c', 2);
-            putNewPiece(new King(b, Color.White), 'd', 1);
-            putNewPiece(new Rock(b, Color.White), 'd', 2);
-            putNewPiece(new Rock(b, Color.White), 'e', 1);
-            putNewPiece(new Rock(b, Color.White), 'e', 2);
+            putNewPiece(new Rock(b, Color.Black), 'a', 8);
+            putNewPiece(new Horse(b, Color.Black), 'b', 8);
+            putNewPiece(new Bishop(b, Color.Black), 'c', 8);
+            putNewPiece(new Queen(b, Color.Black), 'd', 8);
+            putNewPiece(new King(b, Color.Black), 'e', 8);
+            putNewPiece(new Bishop(b, Color.Black), 'f', 8);
+            putNewPiece(new Horse(b, Color.Black), 'g', 8);
+            putNewPiece(new Rock(b, Color.Black), 'h', 8);
+
+
+            putNewPiece(new Pawn(b, Color.White), 'a', 2);
+            putNewPiece(new Pawn(b, Color.White), 'b', 2);
+            putNewPiece(new Pawn(b, Color.White), 'c', 2);
+            putNewPiece(new Pawn(b, Color.White), 'd', 2);
+            putNewPiece(new Pawn(b, Color.White), 'e', 2);
+            putNewPiece(new Pawn(b, Color.White), 'f', 2);
+            putNewPiece(new Pawn(b, Color.White), 'g', 2);
+            putNewPiece(new Pawn(b, Color.White), 'h', 2);
+
+
+            putNewPiece(new Rock(b, Color.White), 'a', 1);
+            putNewPiece(new Horse(b, Color.White), 'b', 1);
+            putNewPiece(new Bishop(b, Color.White), 'c', 1);
+            putNewPiece(new Queen(b, Color.White), 'd', 1);
+            putNewPiece(new King(b, Color.White), 'e', 1);
+            putNewPiece(new Bishop(b, Color.White), 'f', 1);
+            putNewPiece(new Horse(b, Color.White), 'g', 1);
+            putNewPiece(new Rock(b, Color.White), 'h', 1);
 
             /*checkmate situation
             putNewPiece(new King(b, Color.Black), 'a', 8);
