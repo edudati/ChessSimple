@@ -221,7 +221,7 @@ namespace chessMatch
         }
         private void putPiecesOnTheBoard()
         {
-            /*putNewPiece(new Rock(b, Color.Black), 'c', 8);
+            putNewPiece(new Rock(b, Color.Black), 'c', 8);
             putNewPiece(new Rock(b, Color.Black), 'c', 7);
             putNewPiece(new King(b, Color.Black), 'd', 8);
             putNewPiece(new Rock(b, Color.Black), 'd', 7);
@@ -233,15 +233,16 @@ namespace chessMatch
             putNewPiece(new King(b, Color.White), 'd', 1);
             putNewPiece(new Rock(b, Color.White), 'd', 2);
             putNewPiece(new Rock(b, Color.White), 'e', 1);
-            putNewPiece(new Rock(b, Color.White), 'e', 2);*/
+            putNewPiece(new Rock(b, Color.White), 'e', 2);
 
-            /*checkmate situation*/
+            /*checkmate situation
             putNewPiece(new King(b, Color.Black), 'a', 8);
             putNewPiece(new Rock(b, Color.Black), 'b', 8);
 
             putNewPiece(new Rock(b, Color.White), 'h', 7);
             putNewPiece(new Rock(b, Color.White), 'b', 1);
             putNewPiece(new King(b, Color.White), 'd', 1);
+            */
 
         }
     }
