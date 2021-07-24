@@ -15,13 +15,24 @@ namespace Chess
             Screen.printCapturedPieces(match);
             Console.WriteLine();
             Console.WriteLine("Turn: " + match.shift);
-            Console.WriteLine("Waintg " + match.currentPlayer);
-            if (match.check)
+            if (!match.finished)
+            {
+                Console.WriteLine("Waintg " + match.currentPlayer);
+                if (match.check)
+                {
+                    Console.WriteLine("=====================");
+                    Console.WriteLine("       CHECK!");
+                    Console.WriteLine("=====================");
+                }
+            }
+            else
             {
                 Console.WriteLine("=====================");
-                Console.WriteLine("       CHECK!");
+                Console.WriteLine(" !!!! CHECKMATE !!!!");
                 Console.WriteLine("=====================");
+                Console.WriteLine("Winner: " + match.currentPlayer);
             }
+            
         }
         
         

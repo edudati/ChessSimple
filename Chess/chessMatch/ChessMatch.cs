@@ -67,8 +67,17 @@ namespace chessMatch
                 check = false;
             }
 
-            shift++;
-            changePlayer(currentPlayer);
+            if (testCheckMate(opponent(currentPlayer)))
+            {
+                finished = true;
+            }
+            else
+            {
+                shift++;
+                changePlayer(currentPlayer);
+            }
+
+            
         }
 
        
@@ -173,6 +182,37 @@ namespace chessMatch
             return false;
         }
 
+        public bool testCheckMate(Color color)
+        {
+            if (!isInCheck(color))
+            {
+                return false;
+            }
+            foreach (Piece p in piecesInPlay(color))
+            {
+                bool[,] mat = p.possiblesMovs();
+                for (int i = 0; i < b.rows; i++)
+                {
+                    for (int j = 0; j < b.cols; j++)
+                    {
+                        if (mat[i, j])
+                        {
+                            Position origin = p.position;
+                            Position destination = new Position(i, j);
+                            Piece capturedPiece = performMov(origin, destination);
+                            bool testCheck = isInCheck(color);
+                            undoMovement(origin, destination, capturedPiece);
+                            if (!testCheck)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
 
         private void putNewPiece(Piece piece, char col, int row)
         {
@@ -181,7 +221,7 @@ namespace chessMatch
         }
         private void putPiecesOnTheBoard()
         {
-            putNewPiece(new Rock(b, Color.Black), 'c', 8);
+            /*putNewPiece(new Rock(b, Color.Black), 'c', 8);
             putNewPiece(new Rock(b, Color.Black), 'c', 7);
             putNewPiece(new King(b, Color.Black), 'd', 8);
             putNewPiece(new Rock(b, Color.Black), 'd', 7);
@@ -193,7 +233,15 @@ namespace chessMatch
             putNewPiece(new King(b, Color.White), 'd', 1);
             putNewPiece(new Rock(b, Color.White), 'd', 2);
             putNewPiece(new Rock(b, Color.White), 'e', 1);
-            putNewPiece(new Rock(b, Color.White), 'e', 2);
+            putNewPiece(new Rock(b, Color.White), 'e', 2);*/
+
+            /*checkmate situation*/
+            putNewPiece(new King(b, Color.Black), 'a', 8);
+            putNewPiece(new Rock(b, Color.Black), 'b', 8);
+
+            putNewPiece(new Rock(b, Color.White), 'h', 7);
+            putNewPiece(new Rock(b, Color.White), 'b', 1);
+            putNewPiece(new King(b, Color.White), 'd', 1);
 
         }
     }
