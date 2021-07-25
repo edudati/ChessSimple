@@ -35,6 +35,29 @@ namespace chessMatch
             {
                 captured.Add(capturedPiece);
             }
+
+            // #special movement Castling SHORT
+            if (p is King && destination.col == origin.col + 2)
+            {
+                Position originRock = new Position(origin.row, origin.col + 3);
+                Position destinationRock = new Position(origin.row, origin.col + 1);
+                Piece pRock = b.removePiece(originRock);
+                pRock.addMovAmount();
+                b.putPiece(pRock, destinationRock);
+            }
+
+            // #special movement Castling LONG
+            if (p is King && destination.col == origin.col - 2)
+            {
+                Position originRock = new Position(origin.row, origin.col - 4);
+                Position destinationRock = new Position(origin.row, origin.col - 1);
+                Piece pRock = b.removePiece(originRock);
+                pRock.addMovAmount();
+                b.putPiece(pRock, destinationRock);
+            }
+
+
+
             return capturedPiece;
         }
         public void undoMovement(Position origin, Position destination, Piece capturedPiece)
@@ -47,6 +70,26 @@ namespace chessMatch
                 captured.Remove(capturedPiece);
             }
             b.putPiece(p, origin);
+
+            // #special movement UNDO Castling SHORT
+            if (p is King && destination.col == origin.col + 2)
+            {
+                Position originRock = new Position(origin.row, origin.col + 3);
+                Position destinationRock = new Position(origin.row, origin.col + 1);
+                Piece pRock = b.removePiece(destinationRock);
+                pRock.subtractMovAmount();
+                b.putPiece(pRock, originRock);
+            }
+
+            // #special movement UNDO Castling LONG
+            if (p is King && destination.col == origin.col - 2)
+            {
+                Position originRock = new Position(origin.row, origin.col - 4);
+                Position destinationRock = new Position(origin.row, origin.col - 1);
+                Piece pRock = b.removePiece(destinationRock);
+                pRock.subtractMovAmount();
+                b.putPiece(pRock, originRock);
+            }
         }
 
         public void executeAllMove(Position origin, Position destination)
@@ -234,7 +277,7 @@ namespace chessMatch
             putNewPiece(new Horse(b, Color.Black), 'b', 8);
             putNewPiece(new Bishop(b, Color.Black), 'c', 8);
             putNewPiece(new Queen(b, Color.Black), 'd', 8);
-            putNewPiece(new King(b, Color.Black), 'e', 8);
+            putNewPiece(new King(b, Color.Black, this), 'e', 8);
             putNewPiece(new Bishop(b, Color.Black), 'f', 8);
             putNewPiece(new Horse(b, Color.Black), 'g', 8);
             putNewPiece(new Rock(b, Color.Black), 'h', 8);
@@ -254,7 +297,7 @@ namespace chessMatch
             putNewPiece(new Horse(b, Color.White), 'b', 1);
             putNewPiece(new Bishop(b, Color.White), 'c', 1);
             putNewPiece(new Queen(b, Color.White), 'd', 1);
-            putNewPiece(new King(b, Color.White), 'e', 1);
+            putNewPiece(new King(b, Color.White, this), 'e', 1);
             putNewPiece(new Bishop(b, Color.White), 'f', 1);
             putNewPiece(new Horse(b, Color.White), 'g', 1);
             putNewPiece(new Rock(b, Color.White), 'h', 1);

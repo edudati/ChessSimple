@@ -15,6 +15,18 @@ namespace Chess
             Screen.printCapturedPieces(match);
             Console.WriteLine();
             Console.WriteLine("Turn: " + match.shift);
+
+            ConsoleColor aux = Console.ForegroundColor;
+            if (match.currentPlayer == Color.Black)
+            {
+                
+                Console.ForegroundColor = ConsoleColor.Yellow;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+
             if (!match.finished)
             {
                 Console.WriteLine("Waintg " + match.currentPlayer);
@@ -32,6 +44,8 @@ namespace Chess
                 Console.WriteLine("=====================");
                 Console.WriteLine("Winner: " + match.currentPlayer);
             }
+
+            Console.ForegroundColor = aux;
             
         }
         
