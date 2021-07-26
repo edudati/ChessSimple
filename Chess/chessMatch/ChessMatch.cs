@@ -10,8 +10,9 @@ namespace chessMatch
         public Color currentPlayer { get; private set; }
         public bool finished { get; private set; }
         private HashSet<Piece> pieces;
-        private HashSet<Piece> captured;
+        private HashSet<Piece> captureds;
         public bool check { get; private set; }
+        public Piece pieceVulnerableEnPassant { get; private set; }
 
         public ChessMatch()
         {
@@ -19,9 +20,10 @@ namespace chessMatch
             shift = 1;
             currentPlayer = Color.White;
             pieces = new HashSet<Piece>();
-            captured = new HashSet<Piece>();
+            captureds = new HashSet<Piece>();
             check = false;
             finished = false;
+            pieceVulnerableEnPassant = null;
             putPiecesOnTheBoard();
         }
 
@@ -33,7 +35,7 @@ namespace chessMatch
             b.putPiece(p, destination);
             if (capturedPiece != null)
             {
-                captured.Add(capturedPiece);
+                captureds.Add(capturedPiece);
             }
 
             // #special movement Castling SHORT
@@ -56,8 +58,27 @@ namespace chessMatch
                 b.putPiece(pRock, destinationRock);
             }
 
+            
 
-
+             //#special movement en passant
+            if (p is Pawn)
+            {
+                // if Pawn moves in diagonal and did not had a captured piece
+                if(origin.col != destination.col && capturedPiece == null)
+                {
+                    Position posPawn;
+                    if (p.color == Color.White)
+                    {
+                        posPawn = new Position(destination.row + 1, destination.col);
+                    }
+                    else
+                    {
+                        posPawn = new Position(destination.row - 1, destination.col);
+                    }
+                    capturedPiece = b.removePiece(posPawn);
+                    captureds.Add(capturedPiece);
+                }
+            }
             return capturedPiece;
         }
         public void undoMovement(Position origin, Position destination, Piece capturedPiece)
@@ -67,7 +88,7 @@ namespace chessMatch
             if(capturedPiece != null)
             {
                 b.putPiece(capturedPiece, destination);
-                captured.Remove(capturedPiece);
+                captureds.Remove(capturedPiece);
             }
             b.putPiece(p, origin);
 
@@ -89,6 +110,27 @@ namespace chessMatch
                 Piece pRock = b.removePiece(destinationRock);
                 pRock.subtractMovAmount();
                 b.putPiece(pRock, originRock);
+            }
+
+            // #special movement UNDO en passant
+            if (p is Pawn)
+            {
+                // if Pawn moves in diagonal and did not had a captured piece it was an el passant
+                if (origin.col != destination.col && capturedPiece == pieceVulnerableEnPassant)
+                {
+                    // remove piece from wrong place performed by undoMov (couse it was an el passant)
+                    Piece pawn = b.removePiece(destination);
+                    Position posCapturedPawn;
+                    if (p.color == Color.White)
+                    {
+                        posCapturedPawn = new Position(3, destination.col);
+                    }
+                    else
+                    {
+                        posCapturedPawn = new Position(4, destination.col);
+                    }
+                    b.putPiece(pawn, posCapturedPawn);
+                }
             }
         }
 
@@ -120,7 +162,16 @@ namespace chessMatch
                 changePlayer(currentPlayer);
             }
 
-            
+            // # special movement en passant
+            Piece p = b.piece(destination);
+            if (p is Pawn && (destination.row == origin.row - 2 || destination.row == origin.row + 2))
+            {
+                pieceVulnerableEnPassant = p;
+            }
+            else
+            {
+                pieceVulnerableEnPassant = null;
+            }
         }
 
        
@@ -164,7 +215,7 @@ namespace chessMatch
         public HashSet<Piece> capturedPieces(Color color)
         {
             HashSet<Piece> aux = new HashSet<Piece>();
-            foreach (Piece p in captured)
+            foreach (Piece p in captureds)
             {
                 if (p.color == color)
                 {
@@ -264,14 +315,14 @@ namespace chessMatch
         }
         private void putPiecesOnTheBoard()
         {
-            putNewPiece(new Pawn(b, Color.Black), 'a', 7);
-            putNewPiece(new Pawn(b, Color.Black), 'b', 7);
-            putNewPiece(new Pawn(b, Color.Black), 'c', 7);
-            putNewPiece(new Pawn(b, Color.Black), 'd', 7);
-            putNewPiece(new Pawn(b, Color.Black), 'e', 7);
-            putNewPiece(new Pawn(b, Color.Black), 'f', 7);
-            putNewPiece(new Pawn(b, Color.Black), 'g', 7);
-            putNewPiece(new Pawn(b, Color.Black), 'h', 7);
+            putNewPiece(new Pawn(b, Color.Black, this), 'a', 7);
+            putNewPiece(new Pawn(b, Color.Black, this), 'b', 7);
+            putNewPiece(new Pawn(b, Color.Black, this), 'c', 7);
+            putNewPiece(new Pawn(b, Color.Black, this), 'd', 7);
+            putNewPiece(new Pawn(b, Color.Black, this), 'e', 7);
+            putNewPiece(new Pawn(b, Color.Black, this), 'f', 7);
+            putNewPiece(new Pawn(b, Color.Black, this), 'g', 7);
+            putNewPiece(new Pawn(b, Color.Black, this), 'h', 7);
 
             putNewPiece(new Rock(b, Color.Black), 'a', 8);
             putNewPiece(new Horse(b, Color.Black), 'b', 8);
@@ -283,14 +334,14 @@ namespace chessMatch
             putNewPiece(new Rock(b, Color.Black), 'h', 8);
 
 
-            putNewPiece(new Pawn(b, Color.White), 'a', 2);
-            putNewPiece(new Pawn(b, Color.White), 'b', 2);
-            putNewPiece(new Pawn(b, Color.White), 'c', 2);
-            putNewPiece(new Pawn(b, Color.White), 'd', 2);
-            putNewPiece(new Pawn(b, Color.White), 'e', 2);
-            putNewPiece(new Pawn(b, Color.White), 'f', 2);
-            putNewPiece(new Pawn(b, Color.White), 'g', 2);
-            putNewPiece(new Pawn(b, Color.White), 'h', 2);
+            putNewPiece(new Pawn(b, Color.White, this), 'a', 2);
+            putNewPiece(new Pawn(b, Color.White, this), 'b', 2);
+            putNewPiece(new Pawn(b, Color.White, this), 'c', 2);
+            putNewPiece(new Pawn(b, Color.White, this), 'd', 2);
+            putNewPiece(new Pawn(b, Color.White, this), 'e', 2);
+            putNewPiece(new Pawn(b, Color.White, this), 'f', 2);
+            putNewPiece(new Pawn(b, Color.White, this), 'g', 2);
+            putNewPiece(new Pawn(b, Color.White, this), 'h', 2);
 
 
             putNewPiece(new Rock(b, Color.White), 'a', 1);
