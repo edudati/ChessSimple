@@ -58,8 +58,6 @@ namespace chessMatch
                 b.putPiece(pRock, destinationRock);
             }
 
-            
-
              //#special movement en passant
             if (p is Pawn)
             {
@@ -162,16 +160,33 @@ namespace chessMatch
                 changePlayer(currentPlayer);
             }
 
-            // # special movement en passant
             Piece p = b.piece(destination);
+
+            //# special movement promotion
+            if( p is Pawn)
+            {
+                if ((p.color == Color.White && destination.row == 0) || (p.color == Color.Black && destination.row == 7))
+                {
+                    p = b.removePiece(destination);
+                    pieces.Remove(p);
+                    Piece queen = new Queen(b, p.color);
+                    b.putPiece(queen, destination);
+                    pieces.Add(queen);
+                }
+            }
+
+
+
+            // # special movement en passant
+
             if (p is Pawn && (destination.row == origin.row - 2 || destination.row == origin.row + 2))
-            {
-                pieceVulnerableEnPassant = p;
-            }
-            else
-            {
-                pieceVulnerableEnPassant = null;
-            }
+                {
+                    pieceVulnerableEnPassant = p;
+                }
+                else
+                {
+                    pieceVulnerableEnPassant = null;
+                }
         }
 
        
