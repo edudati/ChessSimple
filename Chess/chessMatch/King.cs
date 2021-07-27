@@ -28,6 +28,7 @@ namespace chessMatch
             return p != null && p is Rock && p.movAmount == 0 && p.color == color;
         }
 
+        // Retur an array with all possible movements for the move
         public override bool[,] possiblesMovs()
         {
             bool[,] mat = new bool[b.rows, b.cols];
@@ -92,9 +93,9 @@ namespace chessMatch
             // #Spetial movement Castling
             if (movAmount == 0 && !match.check)
             {
-                // #Spetial movement short castling
-                Position posShortRock = new Position(position.row, position.col + 3);
-                if (testRockForCastling(posShortRock))
+                // for short castling
+                Position aux = new Position(position.row, position.col + 3);
+                if (testRockForCastling(aux))
                 {
                     Position p1 = new Position(position.row, position.col + 1);
                     Position p2 = new Position(position.row, position.col + 2);
@@ -104,9 +105,9 @@ namespace chessMatch
                     }
                 }
 
-                // # spetial movement long castling
-                Position posLongRock = new Position(position.row, position.col - 4);
-                if (testRockForCastling(posLongRock))
+                // # for long castling
+                aux = new Position(position.row, position.col - 4);
+                if (testRockForCastling(aux))
                 {
                     Position p1 = new Position(position.row, position.col - 1);
                     Position p2 = new Position(position.row, position.col - 2);
@@ -117,7 +118,6 @@ namespace chessMatch
                     }
                 }
             }
-
             return mat;
         }
     }

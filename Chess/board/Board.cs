@@ -13,13 +13,15 @@
             pieces = new Piece[rows, cols];
         }
 
-        // Allow access to other classes to private piece... return an especific piece on the array
+        // Allow access to other classes to private piece
+        // return an especific piece on the array
         public Piece piece (int row, int col)
         {
             return pieces[row, col];
         }
 
-        // Allow access to other classes to private piece from a Position... return an especific piece on the array
+        // Allow access to other classes to private piece from a Position
+        // return an especific piece on the array
         public Piece piece(Position pos)
         {
             return pieces[pos.row, pos.col];

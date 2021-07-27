@@ -20,6 +20,7 @@ namespace chessMatch
             return p == null || p.color != this.color;
         }
 
+        // Retur an array with all possible movements for the move
         public override bool[,] possiblesMovs()
         {
             bool[,] mat = new bool[b.rows, b.cols];

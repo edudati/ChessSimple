@@ -1,6 +1,5 @@
 ﻿using System;
 
-
 namespace board
 {
     class BoardException : Exception

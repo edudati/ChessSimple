@@ -13,6 +13,7 @@ namespace chessMatch
             this.row = row;
         }
 
+        // convert the position according chess rules to a position according the array of the board
         public Position ToPosition()
         {
             return new Position(8 - row, col - 'a');
@@ -20,9 +21,7 @@ namespace chessMatch
 
         public override string ToString()
         {
-            return ""
-                + col
-                + row;
+            return "" + col + row;
         }
     }
 }

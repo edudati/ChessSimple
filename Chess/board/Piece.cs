@@ -15,11 +15,13 @@
             movAmount = 0;
         }
 
+        // add number of movements of one piece
         public void addMovAmount()
         {
             movAmount++;
         }
 
+        // subtract number of movements of one piece
         public void subtractMovAmount()
         {
             movAmount--;
@@ -27,6 +29,7 @@
 
         public abstract bool[,] possiblesMovs();
 
+        // Return if exist any possible movement on the board
         public bool existPossibleMov()
         {
             bool[,] mat = possiblesMovs();
@@ -43,6 +46,7 @@
             return false;
         }
 
+        // Returne if the indicated position is true in possibleMovs array
         public bool canMoveTo(Position pos)
         {
             return possiblesMovs()[pos.row, pos.col];

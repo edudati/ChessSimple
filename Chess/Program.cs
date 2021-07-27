@@ -31,29 +31,21 @@ namespace Chess
                         Position destination = Screen.readPositionChess().ToPosition();
                         match.validateDestinationPosition(origin, destination);
 
-                        match.executeAllMove(origin, destination);
+                        match.executeFullMov(origin, destination);
                     }
-                    catch (BoardException e)
+                    catch (BoardException exception)
                     {
-                        Console.WriteLine(e.Message);
+                        Console.WriteLine(exception.Message);
                         Console.ReadLine();
                     }
                 }
                 Console.Clear();
                 Screen.printMatch(match);
-                
-                
             }
-            catch (BoardException e)
+            catch (BoardException exception)
             {
-                Console.WriteLine(e.Message);
-            }
-
-
-
-
-
-            
+                Console.WriteLine(exception.Message);
+            }  
         }
     }
 }

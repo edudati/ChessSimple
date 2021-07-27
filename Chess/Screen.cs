@@ -7,7 +7,6 @@ namespace Chess
 {
     class Screen
     {
-        
         public static void printMatch(ChessMatch match)
         {
             printBoard(match.b);
@@ -18,8 +17,7 @@ namespace Chess
 
             ConsoleColor aux = Console.ForegroundColor;
             if (match.currentPlayer == Color.Black)
-            {
-                
+            {  
                 Console.ForegroundColor = ConsoleColor.Yellow;
             }
             else
@@ -44,12 +42,8 @@ namespace Chess
                 Console.WriteLine("=====================");
                 Console.WriteLine("Winner: " + match.currentPlayer);
             }
-
             Console.ForegroundColor = aux;
-            
         }
-        
-        
         
         public static void printBoard(Board b)
         {
@@ -68,7 +62,6 @@ namespace Chess
             printInBlue("   a b c d e f g h");
             Console.WriteLine();
         }
-
 
         public static void printBoard(Board b, bool[,] possiblePositionsBoard)
         {
@@ -106,12 +99,11 @@ namespace Chess
         {
             Console.WriteLine("Captured pieces: ");
             Console.Write("White: ");
-            printSet(match.capturedPieces(Color.White));
+            printSet(match.capturedPiecesByColor(Color.White));
             Console.WriteLine();
             Console.Write("Black: ");
-            printSet(match.capturedPieces(Color.Black));
+            printSet(match.capturedPiecesByColor(Color.Black));
             Console.WriteLine();
-
         }
 
         public static void printSet(HashSet<Piece> set) 
@@ -123,7 +115,6 @@ namespace Chess
             }
             Console.Write("]");
         }
-
 
         public static PositionOfChess readPositionChess()
         {
@@ -144,7 +135,6 @@ namespace Chess
         // print piece on the screen with your respective color
         private static void printPiece(Piece piece)
         {
-
             if (piece == null)
             {
                 Console.Write("- ");

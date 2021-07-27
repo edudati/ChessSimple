@@ -2,7 +2,8 @@
 {
     enum Color
     {
-        Black, //on the board, will be represented by yellow pieces
+        // on the board, Black pieces will be represented by yellow pieces
+        Black, 
         White
     }
 }

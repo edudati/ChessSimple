@@ -27,6 +27,9 @@ namespace chessMatch
             putPiecesOnTheBoard();
         }
 
+
+        // Remove piece from original position, add a movement to the piece,
+        // capture piece from destination and add to the list of captureds position if not empty, 
         public Piece performMov(Position origin, Position destination)
         {
             Piece p = b.removePiece(origin);
@@ -38,7 +41,7 @@ namespace chessMatch
                 captureds.Add(capturedPiece);
             }
 
-            // #special movement Castling SHORT
+            // #SpecialMovement Castling (short)
             if (p is King && destination.col == origin.col + 2)
             {
                 Position originRock = new Position(origin.row, origin.col + 3);
@@ -48,7 +51,7 @@ namespace chessMatch
                 b.putPiece(pRock, destinationRock);
             }
 
-            // #special movement Castling LONG
+            // #SpecialMovement Castling (long)
             if (p is King && destination.col == origin.col - 2)
             {
                 Position originRock = new Position(origin.row, origin.col - 4);
@@ -58,11 +61,11 @@ namespace chessMatch
                 b.putPiece(pRock, destinationRock);
             }
 
-             //#special movement en passant
+            // #SpecialMovement EnPassant
             if (p is Pawn)
             {
-                // if Pawn moves in diagonal and did not had a captured piece
-                if(origin.col != destination.col && capturedPiece == null)
+                // Is EnPassant if Pawn moves in diagonal and did not had a captured piece
+                if (origin.col != destination.col && capturedPiece == null)
                 {
                     Position posPawn;
                     if (p.color == Color.White)
@@ -79,18 +82,20 @@ namespace chessMatch
             }
             return capturedPiece;
         }
-        public void undoMovement(Position origin, Position destination, Piece capturedPiece)
+
+        // Undo method performMov 
+        public void undoMov(Position origin, Position destination, Piece capturedPiece)
         {
             Piece p = b.removePiece(destination);
             p.subtractMovAmount();
-            if(capturedPiece != null)
+            if (capturedPiece != null)
             {
                 b.putPiece(capturedPiece, destination);
                 captureds.Remove(capturedPiece);
             }
             b.putPiece(p, origin);
 
-            // #special movement UNDO Castling SHORT
+            // #SpecialMovement Castling (short)
             if (p is King && destination.col == origin.col + 2)
             {
                 Position originRock = new Position(origin.row, origin.col + 3);
@@ -100,7 +105,7 @@ namespace chessMatch
                 b.putPiece(pRock, originRock);
             }
 
-            // #special movement UNDO Castling LONG
+            // #SpecialMovement Castling (long)
             if (p is King && destination.col == origin.col - 2)
             {
                 Position originRock = new Position(origin.row, origin.col - 4);
@@ -110,13 +115,12 @@ namespace chessMatch
                 b.putPiece(pRock, originRock);
             }
 
-            // #special movement UNDO en passant
+            // #SpecialMovement EnPassant
             if (p is Pawn)
             {
-                // if Pawn moves in diagonal and did not had a captured piece it was an el passant
                 if (origin.col != destination.col && capturedPiece == pieceVulnerableEnPassant)
                 {
-                    // remove piece from wrong place performed by undoMov (couse it was an el passant)
+                    // Remove piece from wrong place performed by undoMov (couse it was an el passant)
                     Piece pawn = b.removePiece(destination);
                     Position posCapturedPawn;
                     if (p.color == Color.White)
@@ -132,12 +136,13 @@ namespace chessMatch
             }
         }
 
-        public void executeAllMove(Position origin, Position destination)
+        // Execute performMov and verify if is check, if will put the player hinself in check, if is checkmate, 
+        public void executeFullMov(Position origin, Position destination)
         {
             Piece capturedPiece = performMov(origin, destination);
             if (isInCheck(currentPlayer))
             {
-                undoMovement(origin, destination, capturedPiece);
+                undoMov(origin, destination, capturedPiece);
                 throw new BoardException("You do not put yourself in Check!");
             }
 
@@ -162,8 +167,8 @@ namespace chessMatch
 
             Piece p = b.piece(destination);
 
-            //# special movement promotion
-            if( p is Pawn)
+            // #SpecialMovement Promotion
+            if (p is Pawn)
             {
                 if ((p.color == Color.White && destination.row == 0) || (p.color == Color.Black && destination.row == 7))
                 {
@@ -175,22 +180,18 @@ namespace chessMatch
                 }
             }
 
-
-
-            // # special movement en passant
-
+            // #SpecialMovement EnPassant
             if (p is Pawn && (destination.row == origin.row - 2 || destination.row == origin.row + 2))
-                {
-                    pieceVulnerableEnPassant = p;
-                }
-                else
-                {
-                    pieceVulnerableEnPassant = null;
-                }
+            {
+                pieceVulnerableEnPassant = p;
+            }
+            else
+            {
+                pieceVulnerableEnPassant = null;
+            }
         }
 
-       
-
+        // Exceptions validating the original position
         public void validateOriginPosition(Position origin)
         {
             if (b.piece(origin) == null)
@@ -207,6 +208,7 @@ namespace chessMatch
             }
         }
 
+        // Exceptions validating the destination position
         public void validateDestinationPosition(Position origin, Position destination)
         {
             if (!b.piece(origin).canMoveTo(destination))
@@ -215,6 +217,7 @@ namespace chessMatch
             }
         }
 
+        // Change the color of current player
         public void changePlayer(Color currentPlayer)
         {
             if (currentPlayer == Color.White)
@@ -227,7 +230,8 @@ namespace chessMatch
             }
         }
 
-        public HashSet<Piece> capturedPieces(Color color)
+        // Return a list with captured pieces by color.
+        public HashSet<Piece> capturedPiecesByColor(Color color)
         {
             HashSet<Piece> aux = new HashSet<Piece>();
             foreach (Piece p in captureds)
@@ -240,6 +244,7 @@ namespace chessMatch
             return aux;
         }
 
+        // Return a list with pieces on the board by color
         public HashSet<Piece> piecesInPlay(Color color)
         {
             HashSet<Piece> aux = new HashSet<Piece>();
@@ -250,10 +255,11 @@ namespace chessMatch
                     aux.Add(p);
                 }
             }
-            aux.ExceptWith(capturedPieces(color));
+            aux.ExceptWith(capturedPiecesByColor(color));
             return aux;
         }
 
+        // Return the opponent color
         private Color opponent(Color color)
         {
             if (color == Color.White)
@@ -263,7 +269,7 @@ namespace chessMatch
             return Color.White;
         }
 
-       // return the position of the King
+        // return the piece King on the board of one specif color
         private Piece king(Color color)
         {
             foreach (Piece p in piecesInPlay(color))
@@ -276,10 +282,12 @@ namespace chessMatch
             return null;
         }
 
-        // verify if the King is in check. Set the position of the king and run through whole possibles moviments for all pieces in play. If true, the king is in check.
+        // Verify if the King is in check.
+        // Set the position of the king and run through whole possibles moviments for all pieces in play.
+        // If true, the king is in check.
         public bool isInCheck(Color color)
         {
-            foreach(Piece p in piecesInPlay(opponent(color)))
+            foreach (Piece p in piecesInPlay(opponent(color)))
             {
                 Piece k = king(color);
                 bool[,] mat = p.possiblesMovs();
@@ -291,6 +299,8 @@ namespace chessMatch
             return false;
         }
 
+        // Verify for Check in all possibles movements in all pieces on the board
+        // If the piece remains in check in all possibles situations, it is chackmate!
         public bool testCheckMate(Color color)
         {
             if (!isInCheck(color))
@@ -310,7 +320,7 @@ namespace chessMatch
                             Position destination = new Position(i, j);
                             Piece capturedPiece = performMov(origin, destination);
                             bool testCheck = isInCheck(color);
-                            undoMovement(origin, destination, capturedPiece);
+                            undoMov(origin, destination, capturedPiece);
                             if (!testCheck)
                             {
                                 return false;
@@ -322,12 +332,14 @@ namespace chessMatch
             return true;
         }
 
-
+        // Put one piece on the board used in the first time and add the piece in the array pieces
         private void putNewPiece(Piece piece, char col, int row)
         {
             b.putPiece(piece, new PositionOfChess(col, row).ToPosition());
             pieces.Add(piece);
         }
+
+        // Put all pieces in the start position
         private void putPiecesOnTheBoard()
         {
             putNewPiece(new Pawn(b, Color.Black, this), 'a', 7);
@@ -338,7 +350,6 @@ namespace chessMatch
             putNewPiece(new Pawn(b, Color.Black, this), 'f', 7);
             putNewPiece(new Pawn(b, Color.Black, this), 'g', 7);
             putNewPiece(new Pawn(b, Color.Black, this), 'h', 7);
-
             putNewPiece(new Rock(b, Color.Black), 'a', 8);
             putNewPiece(new Horse(b, Color.Black), 'b', 8);
             putNewPiece(new Bishop(b, Color.Black), 'c', 8);
@@ -348,7 +359,6 @@ namespace chessMatch
             putNewPiece(new Horse(b, Color.Black), 'g', 8);
             putNewPiece(new Rock(b, Color.Black), 'h', 8);
 
-
             putNewPiece(new Pawn(b, Color.White, this), 'a', 2);
             putNewPiece(new Pawn(b, Color.White, this), 'b', 2);
             putNewPiece(new Pawn(b, Color.White, this), 'c', 2);
@@ -357,8 +367,6 @@ namespace chessMatch
             putNewPiece(new Pawn(b, Color.White, this), 'f', 2);
             putNewPiece(new Pawn(b, Color.White, this), 'g', 2);
             putNewPiece(new Pawn(b, Color.White, this), 'h', 2);
-
-
             putNewPiece(new Rock(b, Color.White), 'a', 1);
             putNewPiece(new Horse(b, Color.White), 'b', 1);
             putNewPiece(new Bishop(b, Color.White), 'c', 1);
@@ -368,15 +376,13 @@ namespace chessMatch
             putNewPiece(new Horse(b, Color.White), 'g', 1);
             putNewPiece(new Rock(b, Color.White), 'h', 1);
 
-            /*checkmate situation
+            /* Use for checkmate situation of Black pieces
             putNewPiece(new King(b, Color.Black), 'a', 8);
             putNewPiece(new Rock(b, Color.Black), 'b', 8);
-
             putNewPiece(new Rock(b, Color.White), 'h', 7);
             putNewPiece(new Rock(b, Color.White), 'b', 1);
             putNewPiece(new King(b, Color.White), 'd', 1);
             */
-
         }
     }
 }

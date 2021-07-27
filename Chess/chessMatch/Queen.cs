@@ -37,7 +37,6 @@ namespace chessMatch
                 pos.row -= 1;
             }
 
-            
             // up right
             pos.defineValuesPosition(position.row - 1, position.col + 1);
             while (b.isValidPosition(pos) && canMoveHere(pos))
@@ -125,7 +124,6 @@ namespace chessMatch
                 pos.row -= 1;
                 pos.col -= 1;
             }
-
             return mat;
         }
     }

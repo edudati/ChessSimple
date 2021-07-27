@@ -73,7 +73,6 @@ namespace chessMatch
                 }
                 pos.col -= 1;
             }
-
             return mat;
         }
     }

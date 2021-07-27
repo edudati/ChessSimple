@@ -18,7 +18,6 @@ namespace chessMatch
         }
 
         // verify if the space is empty or have an opponent piece
-
         private bool existOpponent(Position pos)
         {
             Piece p = b.piece(pos);
@@ -30,6 +29,7 @@ namespace chessMatch
             return b.piece(pos) == null;
         }
 
+        // Retur an array with all possible movements for the move
         public override bool[,] possiblesMovs()
         {
             bool[,] mat = new bool[b.rows, b.cols];
@@ -67,7 +67,7 @@ namespace chessMatch
                     mat[pos.row, pos.col] = true;
                 }
 
-                // #special movement en passant white
+                // #SpecialMovement EnPassant white
                 if (position.row == 3)
                 {
                     Position posLeft = new Position(position.row, position.col - 1);
@@ -113,7 +113,7 @@ namespace chessMatch
                     mat[pos.row, pos.col] = true;
                 }
 
-                // #special movement en passant black
+                // #SpecialMovement EnPassant black
                 if (position.row == 4)
                 {
                     Position posLeft = new Position(position.row, position.col + 1);

@@ -20,9 +20,7 @@ namespace board
 
         public override string ToString()
         {
-            return row
-                + ", "
-                + col;
+            return row + ", " + col;
         }
     }
 }
